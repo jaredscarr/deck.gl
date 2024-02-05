@@ -1,6 +1,6 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
-import DeckGL, {GeoJsonLayer, ArcLayer} from 'deck.gl';
+import DeckGL, {GeoJsonLayer, ArcLayer, TileLayer} from 'deck.gl';
 
 // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
 const COUNTRIES =
@@ -26,6 +26,10 @@ function Root() {
 
   return (
     <DeckGL controller={true} initialViewState={INITIAL_VIEW_STATE}>
+      <TileLayer
+        id="tile-layer"
+        onTilesLoading={() => console.log("onTilesLoading fired.")}
+      />
       <GeoJsonLayer
         id="base-map"
         data={COUNTRIES}
