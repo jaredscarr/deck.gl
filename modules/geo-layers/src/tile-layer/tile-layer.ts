@@ -275,6 +275,7 @@ export default class TileLayer<DataT = any, ExtraPropsT extends {} = {}> extends
     if (onViewportLoad) {
       // This method can only be called when tileset is defined and updated
       onViewportLoad(tileset!.selectedTiles!);
+      console.log('onViewportLoad fired');
     }
   }
 
@@ -282,6 +283,7 @@ export default class TileLayer<DataT = any, ExtraPropsT extends {} = {}> extends
     const {onTilesLoading} = this.props;
     if (onTilesLoading) {
       onTilesLoading();
+      console.log('onTilesLoadingFired');
     }
   }
 
@@ -308,7 +310,7 @@ export default class TileLayer<DataT = any, ExtraPropsT extends {} = {}> extends
   getTileData(tile: TileLoadProps): Promise<DataT> | DataT | null {
     const {data, getTileData, fetch} = this.props;
     const {signal} = tile;
-
+    this._onTilesLoading?.();
     tile.url =
       typeof data === 'string' || Array.isArray(data) ? getURLFromTemplate(data, tile) : null;
 
@@ -318,8 +320,6 @@ export default class TileLayer<DataT = any, ExtraPropsT extends {} = {}> extends
     if (fetch && tile.url) {
       return fetch(tile.url, {propName: 'data', layer: this, signal});
     }
-
-    this._onTilesLoading?.();
     return null;
   }
 
